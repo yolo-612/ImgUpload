@@ -21,31 +21,33 @@
     <input type="file" id="f1"/><br/><br/>
     <button type="button" id="btn-submit">上 传</button>
   </div>
+  <div id="fileUrl"></div>
   <script>
    function submitUpload() {
         //获得文件列表，注意这里不是数组，而是对象
-        var file = document.getElementById('f1').files[0];
-       
-        var fd = new FormData();   //构造FormData对象
+      var file = document.getElementById('f1').files[0];
+      
+      var fd = new FormData();   //构造FormData对象
 
-        fd.append(file.name, file)
+      fd.append("file", file)
 
-        var xhr = new XMLHttpRequest();   //创建对象
-        xhr.open('POST', 'http://localhost:10001/api/fileUpload', true);
+      var xhr = new XMLHttpRequest();   //创建对象
+      xhr.open('POST', 'http://localhost:10001/api/fileUpload', true);
 
-        xhr.send(fd); //发送时  Content-Type默认就是: multipart/form-data; 
-        xhr.onreadystatechange = function () {
-            console.log('state change', xhr.readyState);
-            if (this.readyState == 4 && this.status == 200) {
-                var obj = JSON.parse(xhr.responseText);   //返回值
-                console.log(obj);
-                if(obj.fileUrl){
-                    alert('上传成功');
-                }
-            }
-        }
+      xhr.send(fd); //发送时  Content-Type默认就是: multipart/form-data; 
+      xhr.onreadystatechange = function () {
+          console.log('state change', xhr.readyState);
+          if (this.readyState == 4 && this.status == 200) {
+              var obj = JSON.parse(xhr.responseText);   //返回值
+              console.log(obj);
+              if(obj.data){
+                  var dom = document.getElementById("fileUrl")
+                  dom.innerHTML = obj.data
+                  alert('上传成功');
+              }
+          }
+      }
     }
-
     //绑定提交事件
     document.getElementById('btn-submit').addEventListener('click',submitUpload);
   </script>
