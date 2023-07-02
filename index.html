@@ -22,6 +22,10 @@
     <button type="button" id="btn-submit">上 传</button>
   </div>
   <div id="fileUrl"></div>
+  <div>
+    <h1>文件下载</h1>
+    <input type="button" value="下载" id="download">
+  </div>
   <script>
    function submitUpload() {
         //获得文件列表，注意这里不是数组，而是对象
@@ -50,6 +54,21 @@
     }
     //绑定提交事件
     document.getElementById('btn-submit').addEventListener('click',submitUpload);
+
+     // 下载
+    document.getElementById('download').onclick = function () {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'http://localhost:10002/api/fileDownload');
+      xhr.send();
+      xhr.responseType = 'blob';
+      xhr.onload = function () {
+        var blob = xhr.response;
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'aa.txt';
+        a.click();
+      }
+    }
   </script>
 
 </body>

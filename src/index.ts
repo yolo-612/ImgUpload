@@ -47,6 +47,11 @@ app.post("/api/fileUpload", upload.any(), (req: any, res: Response) => {
   res.send({ code: 1, msg: "上传成功", data: `http://localhost:${port}/${newName}` });
 });
 
+app.get('/api/fileDownload', (req, res) => {
+  const file = path.join(__dirname, "../public/upload/a.txt")
+  res.download(file, 'a--kk.txt');
+});
+
 // 4. 调用 app.listen 来启动 server 并监听指定端口，启动成功后打印出 log
 app.listen(port, () =>
   console.log(`Express server listening at http://localhost:${port}`)
